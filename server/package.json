@@ -1,0 +1,14 @@
+{
+  "name": "employees-server",
+  "version": "0.1.0",
+  "description": "Employees Server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "12.x"
+  },
+  "author": "",
+  "license": "ISC"
+}
