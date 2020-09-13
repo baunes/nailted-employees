@@ -4,11 +4,21 @@
   "description": "Employees Server",
   "main": "index.js",
   "scripts": {
+    "build": "rimraf ./build && tsc",
+    "start:dev": "nodemon",
+    "start": "npm run build && node build/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
     "node": "12.x"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "14.10.1",
+    "nodemon": "2.0.4",
+    "rimraf": "3.0.2",
+    "ts-node": "9.0.0",
+    "typescript": "4.0.2"
+  }
 }
