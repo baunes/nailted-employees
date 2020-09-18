@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import * as readline from 'readline';
-import * as moment from 'moment';
 import { Employee } from '../domain/employee';
 import { EmployeeRepository } from '../domain/repository';
+import { ParseUtils } from '../../../utils/parseUtils';
 
 export class EmployeeRepositoryFile implements EmployeeRepository {
   public constructor(private fileName: string) {}
@@ -24,15 +24,10 @@ export class EmployeeRepositoryFile implements EmployeeRepository {
   }
 
   private mapRowToEmployee(row: string): Employee {
-    return this.toDomain(row.split(',').map((field) => this.sanitizeString(field)));
-  }
-
-  private sanitizeString(value: string): string {
-    return value.trim().replace(/^"(.+(?="$))"$/, '$1');
+    return this.toDomain(row.split(',').map((field) => ParseUtils.sanitizeString(field)));
   }
 
   private toDomain(row: string[]): Employee {
-    const m = moment.utc(row[6], 'MM/DD/YYYY');
-    return new Employee(Number.parseInt(row[0]), row[1], row[2], row[3], row[4], row[5], m.toDate());
+    return new Employee(Number.parseInt(row[0]), row[1], row[2], row[3], row[4], row[5], ParseUtils.parseDate(row[6]));
   }
 }
