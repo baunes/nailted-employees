@@ -3,6 +3,7 @@ import * as readline from 'readline';
 import { Employee } from '../domain/employee';
 import { EmployeeRepository } from '../domain/repository';
 import { ParseUtils } from '../../../utils/parseUtils';
+import { EmployeeMapper } from '../mappers/employeeMapper';
 
 export class EmployeeRepositoryFile implements EmployeeRepository {
   public constructor(private fileName: string) {}
@@ -24,10 +25,6 @@ export class EmployeeRepositoryFile implements EmployeeRepository {
   }
 
   private mapRowToEmployee(row: string): Employee {
-    return this.toDomain(row.split(',').map((field) => ParseUtils.sanitizeString(field)));
-  }
-
-  private toDomain(row: string[]): Employee {
-    return new Employee(Number.parseInt(row[0]), row[1], row[2], row[3], row[4], row[5], ParseUtils.parseDate(row[6]));
+    return EmployeeMapper.toDomain(row.split(',').map((field) => ParseUtils.sanitizeString(field)));
   }
 }
