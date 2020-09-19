@@ -1,9 +1,9 @@
 import * as fs from 'fs';
 import * as os from 'os';
 import * as util from 'util';
-import { Pagination } from '../../../core/pagination';
-import { Employee } from '../domain/employee';
-import { Filter } from '../domain/repository';
+import { Pagination } from '../../../../core/pagination';
+import { Employee } from '../../domain/employee';
+import { Filter } from '../../domain/repository';
 import { EmployeeRepositoryFile } from './employeeRepositoryFile';
 
 const copyFile = util.promisify(fs.copyFile);

@@ -1,13 +1,13 @@
 import * as fs from 'fs';
 import * as readline from 'readline';
 import * as util from 'util';
-import { Employee } from '../domain/employee';
-import { EmployeeRepository, Filter, QueryOptions } from '../domain/repository';
-import { ParseUtils } from '../../../utils/parseUtils';
-import { EmployeeMapper } from '../mappers/employeeMapper';
-import { Pagination } from '../../../core/pagination';
-import { PaginationUtils } from '../../../utils/paginationUtils';
-import { PaggedDto } from '../../../core/paggedDto';
+import { Employee } from '../../domain/employee';
+import { EmployeeRepository, QueryOptions } from '../../domain/repository';
+import { ParseUtils } from '../../../../utils/parseUtils';
+import { EmployeeMapper } from '../../mappers/employeeMapper';
+import { Pagination } from '../../../../core/pagination';
+import { PaginationUtils } from '../../../../utils/paginationUtils';
+import { PaggedDto } from '../../../../core/paggedDto';
 
 const appendFile = util.promisify(fs.appendFile);
 const fileEncoding = process.env.REPOSITORY_FILE_ENCODING || 'utf8';
