@@ -61,7 +61,7 @@ describe('EmployeeRepositoryFile', () => {
 
   test('filters by email', async (done) => {
     const filter: Filter = (e) => e.email.includes('@superrito.com');
-    const pagedEmployees = await repository.getAllEmployees(Pagination.none(), filter);
+    const pagedEmployees = await repository.getAllEmployees(Pagination.none(), { filter });
 
     expect(pagedEmployees.items).toHaveLength(5);
     expect(pagedEmployees.pagination.page).toBe(0);
@@ -69,6 +69,30 @@ describe('EmployeeRepositoryFile', () => {
     expect(pagedEmployees.pagination.totalPages).toBe(1);
     expect(pagedEmployees.pagination.hasPrevious).toBe(false);
     expect(pagedEmployees.pagination.hasNext).toBe(false);
+
+    done();
+  });
+
+  test('retrieves sorted by name and surname', async (done) => {
+    const sorter = (e1: Employee, e2: Employee) => {
+      const byName = e1.name.localeCompare(e2.name);
+      if (byName === 0) {
+        return e1.surname.localeCompare(e2.surname);
+      } else {
+        return byName;
+      }
+    };
+    const pagedEmployees = await repository.getAllEmployees(Pagination.none(), { sorter });
+
+    expect(pagedEmployees.items).toHaveLength(30);
+    expect(pagedEmployees.pagination.page).toBe(0);
+    expect(pagedEmployees.pagination.totalItems).toBe(30);
+    expect(pagedEmployees.pagination.totalPages).toBe(1);
+    expect(pagedEmployees.pagination.hasPrevious).toBe(false);
+    expect(pagedEmployees.pagination.hasNext).toBe(false);
+
+    expect(pagedEmployees.items[0].id).toBe(15);
+    expect(pagedEmployees.items[29].id).toBe(2);
 
     done();
   });
