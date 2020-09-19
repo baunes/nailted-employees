@@ -87,4 +87,26 @@ describe('Paginations', () => {
     expect(p3.totalPages).toBe(2);
     expect(p3.totalItems).toBe(8);
   });
+
+  test('creates valid Pagination', () => {
+    const p0 = PaginationUtils.createPagination(undefined, undefined);
+    expect(p0.page).toBe(-1);
+    expect(p0.size).toBe(-1);
+
+    const p1 = PaginationUtils.createPagination(0, 0);
+    expect(p1.page).toBe(-1);
+    expect(p1.size).toBe(-1);
+
+    const p2 = PaginationUtils.createPagination(-1, -1);
+    expect(p2.page).toBe(-1);
+    expect(p2.size).toBe(-1);
+
+    const p3 = PaginationUtils.createPagination(0, 2);
+    expect(p3.page).toBe(0);
+    expect(p3.size).toBe(2);
+
+    const p4 = PaginationUtils.createPagination(1, 3);
+    expect(p4.page).toBe(1);
+    expect(p4.size).toBe(3);
+  });
 });

@@ -1,17 +1,14 @@
 export class Pagination {
+  readonly hasPrevious: boolean;
+  readonly hasNext: boolean;
   private constructor(
     readonly page: number,
     readonly size: number,
     readonly totalPages: number,
     readonly totalItems: number,
-  ) {}
-
-  get hasPrevious(): boolean {
-    return this.page > 0;
-  }
-
-  get hasNext(): boolean {
-    return !!this.totalPages && this.page + 1 < this.totalPages;
+  ) {
+    this.hasPrevious = this.page > 0;
+    this.hasNext = !!this.totalPages && this.page + 1 < this.totalPages;
   }
 
   public static none(): Pagination {

@@ -20,4 +20,12 @@ export class PaginationUtils {
     const size = pagination.page >= 0 && pagination.size > 0 ? pagination.size : totalItems;
     return Pagination.full(page, size, Math.ceil(totalItems / size) || 0, totalItems);
   }
+
+  public static createPagination(page: number | undefined, size: number | undefined): Pagination {
+    if (page !== undefined && size !== undefined && page >= 0 && size > 0) {
+      return Pagination.basic(page, size);
+    } else {
+      return Pagination.none();
+    }
+  }
 }
