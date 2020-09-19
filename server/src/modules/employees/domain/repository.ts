@@ -6,6 +6,7 @@ export interface EmployeeRepository {
   getAllEmployees(pagination: Pagination, options?: QueryOptions): Promise<PaggedDto<Employee>>;
   createEmployee(employee: Employee): Promise<void>;
   findEmployeeById(id: number): Promise<Employee | undefined>;
+  getMaxId(): Promise<number>;
 }
 
 export type Filter = (e: Employee) => boolean;

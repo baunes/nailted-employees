@@ -81,4 +81,21 @@ export class EmployeeRepositoryFile implements EmployeeRepository {
     }
     return employee;
   }
+
+  getMaxId(): Promise<number> {
+    return this.getMaxIdFromFile();
+  }
+
+  private async getMaxIdFromFile(): Promise<number> {
+    const rl = readline.createInterface({
+      input: fs.createReadStream(this.fileName),
+      crlfDelay: Infinity,
+    });
+    let maxId = 0;
+    for await (const line of rl) {
+      const e = this.mapRowToEmployee(line);
+      maxId = Math.max(maxId, e.id);
+    }
+    return maxId;
+  }
 }

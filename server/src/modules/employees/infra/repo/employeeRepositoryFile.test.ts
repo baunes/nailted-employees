@@ -183,4 +183,12 @@ describe('EmployeeRepositoryFile', () => {
 
     done();
   });
+
+  test('get max ID', async (done) => {
+    const maxId = await repository.getMaxId();
+
+    expect(maxId).toBe(30);
+
+    done();
+  });
 });
