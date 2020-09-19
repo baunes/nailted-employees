@@ -3,6 +3,7 @@ import * as os from 'os';
 import * as util from 'util';
 import { Pagination } from '../../../core/pagination';
 import { Employee } from '../domain/employee';
+import { Filter } from '../domain/repository';
 import { EmployeeRepositoryFile } from './employeeRepositoryFile';
 
 const copyFile = util.promisify(fs.copyFile);
@@ -54,6 +55,20 @@ describe('EmployeeRepositoryFile', () => {
     expect(pagedEmployees.items[29].birthdate.getUTCDate()).toBe(27);
     expect(pagedEmployees.items[29].birthdate.getUTCMonth() + 1).toBe(11);
     expect(pagedEmployees.items[29].birthdate.getUTCFullYear()).toBe(1952);
+
+    done();
+  });
+
+  test('filters by email', async (done) => {
+    const filter: Filter = (e) => e.email.includes('@superrito.com');
+    const pagedEmployees = await repository.getAllEmployees(Pagination.none(), filter);
+
+    expect(pagedEmployees.items).toHaveLength(5);
+    expect(pagedEmployees.pagination.page).toBe(0);
+    expect(pagedEmployees.pagination.totalItems).toBe(5);
+    expect(pagedEmployees.pagination.totalPages).toBe(1);
+    expect(pagedEmployees.pagination.hasPrevious).toBe(false);
+    expect(pagedEmployees.pagination.hasNext).toBe(false);
 
     done();
   });

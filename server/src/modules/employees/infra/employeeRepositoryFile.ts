@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as readline from 'readline';
 import * as util from 'util';
 import { Employee } from '../domain/employee';
-import { EmployeeRepository } from '../domain/repository';
+import { EmployeeRepository, Filter } from '../domain/repository';
 import { ParseUtils } from '../../../utils/parseUtils';
 import { EmployeeMapper } from '../mappers/employeeMapper';
 import { Pagination } from '../../../core/pagination';
@@ -15,11 +15,11 @@ const fileEncoding = process.env.REPOSITORY_FILE_ENCODING || 'utf8';
 export class EmployeeRepositoryFile implements EmployeeRepository {
   public constructor(private fileName: string) {}
 
-  async getAllEmployees(pagination: Pagination): Promise<PaggedDto<Employee>> {
-    return this.loadEmployeesFromFile(pagination);
+  async getAllEmployees(pagination: Pagination, filter?: Filter): Promise<PaggedDto<Employee>> {
+    return this.loadEmployeesFromFile(pagination, filter);
   }
 
-  private async loadEmployeesFromFile(pagination: Pagination): Promise<PaggedDto<Employee>> {
+  private async loadEmployeesFromFile(pagination: Pagination, filter?: Filter): Promise<PaggedDto<Employee>> {
     const [fromLimit, toLimit] = this.getLimitsForPagination(pagination);
     let currentIndex = 0;
     let totalItems = 0;
@@ -29,11 +29,14 @@ export class EmployeeRepositoryFile implements EmployeeRepository {
     });
     const employees = [];
     for await (const line of rl) {
-      if (fromLimit < 0 || (fromLimit >= 0 && fromLimit <= currentIndex && currentIndex <= toLimit)) {
-        employees.push(this.mapRowToEmployee(line));
+      const employee = this.mapRowToEmployee(line);
+      if (!filter || filter(employee)) {
+        if (fromLimit < 0 || (fromLimit >= 0 && fromLimit <= currentIndex && currentIndex <= toLimit)) {
+          employees.push(employee);
+        }
+        currentIndex++;
+        totalItems++;
       }
-      currentIndex++;
-      totalItems++;
     }
     const paginationWithTotals = PaginationUtils.createPaginationWithTotals(pagination, totalItems);
     return new PaggedDto(paginationWithTotals, employees);
