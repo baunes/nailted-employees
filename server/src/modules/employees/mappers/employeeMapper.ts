@@ -14,4 +14,16 @@ export class EmployeeMapper {
     }
     return new Employee(Number.parseInt(row[0]), row[1], row[2], row[3], row[4], row[5], ParseUtils.parseDate(row[6]));
   }
+
+  public static toStringRow(employee: Employee): string[] {
+    return [
+      employee.id.toString(),
+      employee.name,
+      employee.surname,
+      employee.address,
+      employee.phone,
+      employee.email,
+      ParseUtils.formatDate(employee.birthdate),
+    ];
+  }
 }

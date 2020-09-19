@@ -1,7 +1,20 @@
+import * as fs from 'fs';
+import * as os from 'os';
+import * as util from 'util';
 import { Pagination } from '../../../core/pagination';
+import { Employee } from '../domain/employee';
 import { EmployeeRepositoryFile } from './employeeRepositoryFile';
 
+const copyFile = util.promisify(fs.copyFile);
+const unlink = util.promisify(fs.unlink);
+
 const employeesFile = `${process.cwd()}/test-assets/employees.txt`;
+
+async function copyRepositoryFile(): Promise<string> {
+  const tmpFile = `${os.tmpdir()}/employees-${new Date().valueOf()}.txt`;
+  await copyFile(employeesFile, tmpFile);
+  return tmpFile;
+}
 
 describe('EmployeeRepositoryFile', () => {
   const repository = new EmployeeRepositoryFile(employeesFile);
@@ -74,6 +87,32 @@ describe('EmployeeRepositoryFile', () => {
     expect(pagedEmployees.pagination.totalPages).toBe(6);
     expect(pagedEmployees.pagination.hasPrevious).toBe(true);
     expect(pagedEmployees.pagination.hasNext).toBe(true);
+
+    done();
+  });
+
+  test('persist an employee', async (done) => {
+    const tmpFile = await copyRepositoryFile();
+    const tmpRepository = new EmployeeRepositoryFile(tmpFile);
+
+    const lengthBeforeCreation = await (await tmpRepository.getAllEmployees(Pagination.none())).items.length;
+
+    const employee = new Employee(
+      31,
+      'Cox',
+      'Della',
+      '4945 Lucky Duck Drive',
+      '412-862-8457',
+      'DellaDCox@superrito.com',
+      new Date('1985-10-12'),
+    );
+
+    await tmpRepository.createEmployee(employee);
+
+    const lengthAfterCreation = await (await tmpRepository.getAllEmployees(Pagination.none())).items.length;
+    unlink(tmpFile);
+
+    expect(lengthAfterCreation).toBe(lengthBeforeCreation + 1);
 
     done();
   });
