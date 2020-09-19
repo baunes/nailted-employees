@@ -4,14 +4,6 @@ describe('ParseUtils', () => {
   // Trick for coverage on static methods
   new ParseUtils();
 
-  test('sanitizes string', () => {
-    expect(ParseUtils.sanitizeString('my string')).toBe('my string');
-    expect(ParseUtils.sanitizeString('my "string".')).toBe('my "string".');
-    expect(ParseUtils.sanitizeString('"string"')).toBe('string');
-    expect(ParseUtils.sanitizeString("my 'string'.")).toBe("my 'string'.");
-    expect(ParseUtils.sanitizeString("'string'")).toBe("'string'");
-  });
-
   test('parses dates correctly', () => {
     const d1 = ParseUtils.parseDate('01/01/2020');
     expect(d1.getUTCDate()).toBe(1);
@@ -46,5 +38,11 @@ describe('ParseUtils', () => {
     expect(ParseUtils.toCsvRow([1, 2, 'other, value'])).toBe('1,2,"other, value"\n');
     expect(ParseUtils.toCsvRow([1, 2, 'other, "0" value'])).toBe('1,2,"other, ""0"" value"\n');
     expect(ParseUtils.toCsvRow([1, 2, 'other"," value'])).toBe('1,2,"other"","" value"\n');
+  });
+
+  test('maps rows from csv string', () => {
+    expect(
+      ParseUtils.fromCsvRow('100,John,Dow,"Evergreen Terrace, 123",123-456-7890,jdown@email.com,02/03/1901'),
+    ).toStrictEqual(['100', 'John', 'Dow', 'Evergreen Terrace, 123', '123-456-7890', 'jdown@email.com', '02/03/1901']);
   });
 });

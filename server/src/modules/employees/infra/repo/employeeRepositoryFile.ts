@@ -48,7 +48,7 @@ export class EmployeeRepositoryFile implements EmployeeRepository {
   }
 
   private mapRowToEmployee(row: string): Employee {
-    return EmployeeMapper.toDomain(row.split(',').map((field) => ParseUtils.sanitizeString(field)));
+    return EmployeeMapper.toDomain(ParseUtils.fromCsvRow(row));
   }
 
   private getLimitsForPagination(pagination: Pagination): [number, number] {
