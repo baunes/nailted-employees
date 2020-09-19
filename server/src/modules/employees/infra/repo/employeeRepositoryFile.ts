@@ -23,12 +23,8 @@ export class EmployeeRepositoryFile implements EmployeeRepository {
     const [fromLimit, toLimit] = this.getLimitsForPagination(pagination);
     let currentIndex = 0;
     let totalItems = 0;
-    const rl = readline.createInterface({
-      input: fs.createReadStream(this.fileName),
-      crlfDelay: Infinity,
-    });
     const employees = [];
-    for await (const line of rl) {
+    for await (const line of this.getLinesIterator()) {
       const employee = this.mapRowToEmployee(line);
       if (!options.filter || options.filter(employee)) {
         if (fromLimit < 0 || (fromLimit >= 0 && fromLimit <= currentIndex && currentIndex <= toLimit)) {
@@ -65,12 +61,8 @@ export class EmployeeRepositoryFile implements EmployeeRepository {
   }
 
   private async findEmployeesFromFile(id: number): Promise<Employee | undefined> {
-    const rl = readline.createInterface({
-      input: fs.createReadStream(this.fileName),
-      crlfDelay: Infinity,
-    });
     let employee: Employee | undefined;
-    for await (const line of rl) {
+    for await (const line of this.getLinesIterator()) {
       const e = this.mapRowToEmployee(line);
       if (e.id == id) {
         employee = e;
@@ -87,15 +79,18 @@ export class EmployeeRepositoryFile implements EmployeeRepository {
   }
 
   private async getMaxIdFromFile(): Promise<number> {
-    const rl = readline.createInterface({
-      input: fs.createReadStream(this.fileName),
-      crlfDelay: Infinity,
-    });
     let maxId = 0;
-    for await (const line of rl) {
+    for await (const line of this.getLinesIterator()) {
       const e = this.mapRowToEmployee(line);
       maxId = Math.max(maxId, e.id);
     }
     return maxId;
+  }
+
+  private getLinesIterator(): readline.Interface {
+    return readline.createInterface({
+      input: fs.createReadStream(this.fileName),
+      crlfDelay: Infinity,
+    });
   }
 }
