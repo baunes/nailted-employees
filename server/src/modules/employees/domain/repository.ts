@@ -5,5 +5,5 @@ import { Employee } from './employee';
 export interface EmployeeRepository {
   getAllEmployees(pagination: Pagination): Promise<PaggedDto<Employee>>;
   createEmployee(employee: Employee): Promise<void>;
-  // findEmployeeById(id: number): Employee | undefined;
+  findEmployeeById(id: number): Promise<Employee | undefined>;
 }

@@ -48,8 +48,29 @@ export class EmployeeRepositoryFile implements EmployeeRepository {
   }
 
   createEmployee(employee: Employee): Promise<void> {
-    // TODO Validate id dont exists
     const row = ParseUtils.toCsvRow(EmployeeMapper.toStringRow(employee));
     return appendFile(this.fileName, row, fileEncoding);
+  }
+
+  findEmployeeById(id: number): Promise<Employee | undefined> {
+    return this.findEmployeesFromFile(id);
+  }
+
+  private async findEmployeesFromFile(id: number): Promise<Employee | undefined> {
+    const rl = readline.createInterface({
+      input: fs.createReadStream(this.fileName),
+      crlfDelay: Infinity,
+    });
+    let employee: Employee | undefined;
+    for await (const line of rl) {
+      const e = this.mapRowToEmployee(line);
+      if (e.id == id) {
+        employee = e;
+      }
+      if (e.id >= id) {
+        break;
+      }
+    }
+    return employee;
   }
 }

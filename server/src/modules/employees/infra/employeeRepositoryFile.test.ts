@@ -116,4 +116,32 @@ describe('EmployeeRepositoryFile', () => {
 
     done();
   });
+
+  test('finds an employee', async (done) => {
+    const employee = await repository.findEmployeeById(21);
+
+    expect(employee).not.toBeUndefined();
+
+    if (employee !== undefined) {
+      expect(employee.id).toBe(21);
+      expect(employee.name).toBe('Marco');
+      expect(employee.surname).toBe('Dube');
+      expect(employee.address).toBe('1779 Atha Drive');
+      expect(employee.phone).toBe('661-695-3020');
+      expect(employee.email).toBe('MarcoPDube@rhyta.com');
+      expect(employee.birthdate.getUTCDate()).toBe(25);
+      expect(employee.birthdate.getUTCMonth() + 1).toBe(7);
+      expect(employee.birthdate.getUTCFullYear()).toBe(1939);
+    }
+
+    done();
+  });
+
+  test("returns undefined an id does't exists", async (done) => {
+    const employee = await repository.findEmployeeById(100000);
+
+    expect(employee).toBeUndefined();
+
+    done();
+  });
 });
