@@ -7,6 +7,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ContainersModule } from './containers/containers.module';
 import { RouterModule } from '@angular/router';
 import { HomeComponent } from './features/home/home.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,6 +16,7 @@ import { HomeComponent } from './features/home/home.component';
     AppRoutingModule,
     NgbModule,
     ContainersModule,
+    HttpClientModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent },
       {

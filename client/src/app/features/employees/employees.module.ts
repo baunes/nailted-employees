@@ -4,10 +4,9 @@ import { EmployeesListComponent } from './employees-list/employees-list.componen
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgbdSortableHeader } from './employees-list/sortable.directive';
 
 @NgModule({
-  declarations: [EmployeesListComponent, NgbdSortableHeader],
+  declarations: [EmployeesListComponent],
   imports: [
     CommonModule,
     FormsModule,

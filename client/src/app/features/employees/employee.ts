@@ -1,3 +1,5 @@
+import { PaggedDto } from 'src/app/core/paggedDto';
+
 export interface Employee {
   id?: number;
   name: string;
@@ -7,3 +9,5 @@ export interface Employee {
   email: string;
   birthdate: Date;
 }
+
+export type PaggedEmployee = PaggedDto<Employee>;
