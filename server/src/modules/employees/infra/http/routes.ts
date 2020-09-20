@@ -1,7 +1,6 @@
 import express from 'express';
-import { Pagination } from '../../../../core/pagination';
 import { PaginationUtils } from '../../../../utils/paginationUtils';
-import { getEmployees, createEmployee } from '../../useCases';
+import { getEmployees, createEmployee, findEmployeeById } from '../../useCases';
 
 const employeeRouter = express.Router();
 
@@ -17,6 +16,18 @@ employeeRouter.get('/', (req, res) => {
     .catch((error: Error) => {
       console.log(error.message);
       res.status(500).json('Error retrieving employees');
+    });
+});
+
+employeeRouter.get('/:id', (req, res) => {
+  const id = Number.parseInt(req.params.id, 10);
+
+  return findEmployeeById
+    .do(id)
+    .then((employee) => res.json(employee))
+    .catch((error: Error) => {
+      console.log(error.message);
+      res.status(500).json('Error retrieving Employee');
     });
 });
 
