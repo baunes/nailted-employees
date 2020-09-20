@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { PaggedEmployee } from './employee';
+import { Employee, PaggedEmployee } from './employee';
 
 @Injectable({ providedIn: 'root' })
 export class EmployeeService {
@@ -27,5 +27,9 @@ export class EmployeeService {
     return this.http.get<PaggedEmployee>(this.employeesUrl, {
       params,
     });
+  }
+
+  createEmployee(employee: Employee): Observable<Employee> {
+    return this.http.post<Employee>(this.employeesUrl, employee);
   }
 }

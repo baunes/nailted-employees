@@ -1,6 +1,6 @@
 <h1 class="mt-5">Employees</h1>
 
-<form>
+<form class="mt-4 mb-4">
   <div class="form-group form-inline">
       Email: <input class="form-control ml-2" type="text" name="searchTerm" [(ngModel)]="email" (keyup.enter)="onSearch()"/>
       <span class="ml-3" *ngIf="isLoading | async">Loading...</span>
