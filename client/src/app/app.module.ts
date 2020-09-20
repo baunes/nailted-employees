@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ContainersModule } from './containers/containers.module';
-import { DefaultLayoutComponent } from './containers/default-layout/default-layout.component';
 import { RouterModule } from '@angular/router';
 import { HomeComponent } from './features/home/home.component';
 
@@ -16,7 +15,16 @@ import { HomeComponent } from './features/home/home.component';
     AppRoutingModule,
     NgbModule,
     ContainersModule,
-    RouterModule.forRoot([{ path: '', component: HomeComponent }]),
+    RouterModule.forRoot([
+      { path: '', component: HomeComponent },
+      {
+        path: 'employees',
+        loadChildren: () =>
+          import('./features/employees/employees.module').then(
+            (m) => m.EmployeesModule
+          ),
+      },
+    ]),
   ],
   providers: [],
   bootstrap: [AppComponent],
