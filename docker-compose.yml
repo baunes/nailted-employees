@@ -1,0 +1,10 @@
+version: "2"
+services:
+  front:
+    build: client
+    container_name: employees_front
+    ports:
+      - "8080:80"
+  api:
+    build: server
+    container_name: employees_api
