@@ -21,22 +21,22 @@ export class EmployeeRepositoryFile implements EmployeeRepository {
 
   private async loadEmployeesFromFile(pagination: Pagination, options: QueryOptions): Promise<PaggedDto<Employee>> {
     const [fromLimit, toLimit] = this.getLimitsForPagination(pagination);
-    let currentIndex = 0;
     let totalItems = 0;
-    const employees = [];
+    let employees = [];
     for await (const line of this.getLinesIterator()) {
       const employee = this.mapRowToEmployee(line);
       if (!options.filter || options.filter(employee)) {
-        if (fromLimit < 0 || (fromLimit >= 0 && fromLimit <= currentIndex && currentIndex <= toLimit)) {
-          employees.push(employee);
-        }
-        currentIndex++;
+        employees.push(employee);
         totalItems++;
       }
     }
 
     if (options.sorter) {
       employees.sort(options.sorter);
+    }
+
+    if (fromLimit >= 0 && toLimit > 0) {
+      employees = employees.slice(fromLimit, toLimit + 1);
     }
 
     const paginationWithTotals = PaginationUtils.createPaginationWithTotals(pagination, totalItems);
