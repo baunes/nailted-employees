@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { EmployeeService } from '../employees.service';
 
 @Component({
@@ -11,8 +12,9 @@ export class NewEmployeeComponent implements OnInit {
   createEmployeeForm: FormGroup;
 
   constructor(
-    public service: EmployeeService,
-    private formBuilder: FormBuilder
+    private service: EmployeeService,
+    private formBuilder: FormBuilder,
+    private router: Router
   ) {
     this.createEmployeeForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -36,6 +38,7 @@ export class NewEmployeeComponent implements OnInit {
     this.service.createEmployee(employee).subscribe((created) => {
       console.log('Created', created);
       this.createEmployeeForm.reset();
+      this.viewEmployee(created.id);
     });
   }
 
@@ -47,5 +50,9 @@ export class NewEmployeeComponent implements OnInit {
       'is-valid': this.createEmployeeForm.controls[field].valid,
       '': this.createEmployeeForm.controls[field].untouched,
     };
+  }
+
+  private viewEmployee(id: number): void {
+    this.router.navigate([`/employees/${id}`]);
   }
 }

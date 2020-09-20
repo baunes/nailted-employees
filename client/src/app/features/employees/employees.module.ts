@@ -6,9 +6,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EmployeesListComponent } from './employees-list/employees-list.component';
 import { NewEmployeeComponent } from './new-employee/new-employee.component';
 import { ROUTES } from './routes';
+import { ViewEmployeeComponent } from './view-employee/view-employee.component';
 
 @NgModule({
-  declarations: [EmployeesListComponent, NewEmployeeComponent],
+  declarations: [EmployeesListComponent, NewEmployeeComponent, ViewEmployeeComponent],
   imports: [
     CommonModule,
     FormsModule,

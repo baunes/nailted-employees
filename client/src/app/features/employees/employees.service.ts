@@ -10,6 +10,10 @@ export class EmployeeService {
 
   constructor(private http: HttpClient) {}
 
+  findById(employeeId: number): Observable<Employee> {
+    return this.http.get<Employee>(`${this.employeesUrl}/${employeeId}`);
+  }
+
   getEmployees(
     page: number = 0,
     size: number = 10,

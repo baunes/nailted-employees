@@ -31,9 +31,5 @@
         <input type="date" class="form-control" id="birthdate" formControlName="birthdate" [ngClass]="getCssValidationClass('birthdate')">
     </div>
 
-    <div class="invalid-feedback">
-        Please select a valid state.
-    </div>
-
     <button type="submit" class="btn btn-primary" [disabled]="createEmployeeForm.invalid">Create</button>
 </form>
