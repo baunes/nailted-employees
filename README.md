@@ -9,6 +9,11 @@ docker-compose build
 docker-compose up
 ```
 
+This will run two services:
+
+- front: an nginx image with the Angular front build for production.
+- api: the express api, only available from the `front` service.
+
 To run everything in local:
 
 ```

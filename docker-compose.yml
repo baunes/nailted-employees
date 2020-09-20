@@ -8,3 +8,5 @@ services:
   api:
     build: server
     container_name: employees_api
+    # ports:
+    #   - "8080:80"
